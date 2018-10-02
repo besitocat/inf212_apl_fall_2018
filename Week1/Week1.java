@@ -2,7 +2,6 @@ import java.io.IOException;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.File;
-import java.io.FileInputStream;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Collections; 
@@ -62,7 +61,6 @@ public class Week1 {
 						else{
 							termFreq.put(w,1);
 						}
-						
         			}
         		}	
         	}
@@ -77,8 +75,6 @@ public class Week1 {
      return sortedTermFreq;
    }
    
-   
-   
    private static void printResults(LinkedHashMap<String,Integer> sortedTermFreqCounts, int k){
    	   int counter = 0;
    	   for (String key: sortedTermFreqCounts.keySet()){
@@ -86,7 +82,6 @@ public class Week1 {
    	   	   	   System.out.println(key + " - " + Integer.toString(sortedTermFreqCounts.get(key)));
    	   	   	   counter +=1;
    	   	   }
-   	   }
-   	   
+   	   }  
    }
 }
