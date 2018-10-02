@@ -47,12 +47,13 @@ public class Week1 {
    	    try{
         	BufferedReader r = new BufferedReader(new FileReader(textFile));
         	String line;
+        	String regex = "[\\W]|_";
         	while((line=r.readLine())!=null){
+        		line = line.replaceAll(regex, " "); //replace non-alphanumeric characters
+        		line = line.toLowerCase();
         		String [] split_line = line.split(" ");
         		for (String w: split_line){
-        			w = w.toLowerCase();
-        			w = w.replaceAll("[\\W]|_", "");
-        			if (!stopwords.contains(w)){
+        			if (!stopwords.contains(w) && w.length()>1){
 						if (termFreq.containsKey(w)){
 							int curFreq = termFreq.get(w)  + 1;
 							termFreq.put(w,curFreq);
