@@ -1,5 +1,7 @@
 How to run in command line:
 
+within /projects/besito-inf212_mycode/Week1 directory: 
+
 Compile by running:
     javac Week1.java
  
