@@ -9,6 +9,7 @@ import java.util.Comparator;
 import java.util.HashMap; 
 import java.util.LinkedHashMap; 
 import java.util.Map;
+import java.util.function.Function;
 
 //Evita Bakopoulou, UCInet: ebakopou
 
@@ -53,30 +54,32 @@ public class Five {
         return words;
 	}
 	
-	//loads stopword file and removes them from our data list:
-	private static List<String> removeStopWords(List<String> data){
-		String stopwords_path = data.remove(data.size()-1); //the stopword file path as given from command line
-		String line;
-        List<String> stopword_list = new ArrayList<String>();
-        try{
-        	BufferedReader r = new BufferedReader(new FileReader(stopwords_path));
-        	while((line=r.readLine())!=null){
-        		String [] split_line = line.split(",");
-        		for (String w: split_line){
-        			stopword_list.add(w);
-        		}
-        	}
-        }
-        catch (IOException e){
-        	e.printStackTrace();
-        }
-        List<String> new_data = new ArrayList<String>();
-        for (String w:data){
-        	if (w.length()>1 && !stopword_list.contains(w)){
-        		new_data.add(w);
-        	}
-        }
-        return new_data;
+	//function with currying, it gets the data list and it applies to it the second argument,
+	//which is the path of the stopwords
+	private static Function<String, List<String>> removeStopwords(List<String> data) {
+	    return stopwords_path -> {
+	        String line;
+            List<String> stopword_list = new ArrayList<String>();
+            try{
+            	BufferedReader r = new BufferedReader(new FileReader(stopwords_path));
+            	while((line=r.readLine())!=null){
+            		String [] split_line = line.split(",");
+            		for (String w: split_line){
+            			stopword_list.add(w);
+            		}
+            	}
+            }
+            catch (IOException e){
+            	e.printStackTrace();
+            }
+            List<String> new_data = new ArrayList<String>();
+            for (String w:data){
+            	if (w.length()>1 && !stopword_list.contains(w)){
+            		new_data.add(w);
+            	}
+            }
+	        return new_data;
+	    };
 	}
 
 	//gets the counts per word:
@@ -115,9 +118,7 @@ public class Five {
    }
 	
 	public static void main(String[] args){
-		List<String> data;
-		data = scanWords(filterCharsAndNormalize(readFile(args[0])));
-		data.add(args[1]);
-		printResults(sort(getFrequencies(removeStopWords(data))));
+		printResults(sort(getFrequencies(removeStopwords((scanWords(filterCharsAndNormalize(readFile(args[0]))))).apply(args[1]))));
+		
 	}
 }
