@@ -1,4 +1,4 @@
-gimport java.io.IOException;
+import java.io.IOException;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.File;
@@ -15,8 +15,7 @@ import java.util.Map;
 public class Four {
 	
 	//reads the data file and loads the lines into a list:
-	private static List<String> readFile(String filePath){
-		List<String> data = new ArrayList<String>();
+	private static List<String> readFile(List<String> data, String filePath){
 		String line;
         try{
         	BufferedReader r = new BufferedReader(new FileReader(filePath));
@@ -104,11 +103,11 @@ public class Four {
 	}	
 	
 	public static void main(String[] args){
-		List<String> data;
+		List<String> data = new ArrayList<String>();
 		Map<String, Integer> termFreq;
 		LinkedHashMap<String, Integer> sortedTermFreq;
 		
-		data = readFile(args[0]);
+		data = readFile(data, args[0]);
 		data = filterCharsAndNormalize(data);
 		data = scanWords(data);
 		data = removeStopWords(data);
