@@ -21,7 +21,7 @@ words = [w for w in words if w not in stop_words] #this makes the lambda a bit f
 word_freqs = {}
 
 wf_count = lambda f: lambda l: lambda d: (None if not l else ( f(l[1:])(d) if not\
-    (d.update({l[0]: d[l[0]] + 1}) if l[0] in d else d.update({l[0]: 1})) else True ))
+    (d.update({l[0]: d[l[0]] + 1}) if l[0] in d else d.update({l[0]: 1})) else d ))
     
 # Theoretically, we would just call count(words, word_freqs)
 # Try doing that and see what happens.
