@@ -19,7 +19,7 @@ interface IFunction{
 class ReadFile implements IFunction{
 
 	
-	//reads the data file and loads the lines into a list:
+	 //reads the data file and loads the lines into a list:
 	 public void call(Object arg, IFunction func){
 		String filePath = (String)arg;
 		List<String> data = new ArrayList<String>();
@@ -40,7 +40,7 @@ class ReadFile implements IFunction{
 
 class FilterChars implements IFunction{
 	
-	//filters non alphanumeric and converts to lowercase: 
+	 //filters non alphanumeric and converts to lowercase: 
 	 public void call(Object arg, IFunction func){
 		List<String> data = (List<String>)arg;
 		List<String> filtered_data = new ArrayList<String>();
@@ -55,7 +55,7 @@ class FilterChars implements IFunction{
 
 class Normalize implements IFunction{
 	
-	//filters non alphanumeric and converts to lowercase:
+	 //filters non alphanumeric and converts to lowercase:
 	 public void call(Object arg, IFunction func){
 		List<String> data = (List<String>)arg;
 		List<String> filtered_data = new ArrayList<String>();
