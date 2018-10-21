@@ -23,8 +23,6 @@ word_freqs = {}
 wf_count = lambda f: lambda l: lambda d: (None if not l else ( f(l[1:])(d) if not\
     (d.update({l[0]: d[l[0]] + 1}) if l[0] in d else d.update({l[0]: 1})) else d ))
     
-# Theoretically, we would just call count(words, word_freqs)
-# Try doing that and see what happens.
 for i in range(0, len(words), RECURSION_LIMIT):
     Y(wf_count)(words[i:i+RECURSION_LIMIT])(word_freqs)
 
