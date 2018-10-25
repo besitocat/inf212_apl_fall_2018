@@ -25,7 +25,7 @@ class Twelve{
         		  words.add(w);
         	      }
         	}
-        	obj.put('data', words);
+        	obj.put("data", words);
         }
         catch (IOException e){
         	e.printStackTrace();
@@ -49,26 +49,26 @@ class Twelve{
         catch (IOException e){
         	e.printStackTrace();
         }
-        obj.put('stop_words', stopword_list);
+        obj.put("stop_words", stopword_list);
     }
     
     
     public void increment_count(HashMap<String, List<String>> obj, String w){
-        if (obj.get('freqs').containsKey(w)){
-			int curFreq = obj.get('freqs').get(w)  + 1;
-			obj.get('freqs').put(w,curFreq);
+        if (obj.get("freqs").containsKey(w)){
+			int curFreq = obj.get("freqs").get(w)  + 1;
+			obj.get("freqs").put(w,curFreq);
 		}
 		else{
-			obj.get('freqs').put(w,1);
+			obj.get("freqs").put(w,1);
 		}
     }
     
     
     public static void main(String[] args){
         HashMap<String, List<String>> data_storage_obj = new HashMap<>();
-        data_storage_obj.put('data') = new List<String>();
-        data_storage_obj.put('init') = "";
-        data_storage_obj.put('words') = data_storage.get('data');
+        data_storage_obj.put("data", new List<String>());
+        data_storage_obj.put("init") = "";
+        data_storage_obj.put("words", data_storage_obj.get("data"));
 
         
     }

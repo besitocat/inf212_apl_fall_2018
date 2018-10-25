@@ -30,7 +30,7 @@ class DataStorageManager{
         return;
     }
     
-    public List<String> init(String filePath) throws IOException{
+    private List<String> init(String filePath) throws IOException{
         try{
         	BufferedReader r = new BufferedReader(new FileReader(filePath));
         	String line;
@@ -47,7 +47,7 @@ class DataStorageManager{
         return this.data;
     }
     
-    public List<String> getWords(){
+    private List<String> getWords(){
         List<String> words = new ArrayList<String>();
 		for (String line: this.data){
 			String [] split = line.split(" ");
@@ -78,7 +78,7 @@ class StopWordManager{
         return;
     }
     
-    public Boolean init() throws IOException{
+    private Boolean init() throws IOException{
         String stopwords_path = "../stop_words.txt";
 		String line;
         try{
@@ -96,7 +96,7 @@ class StopWordManager{
         return true;
     }
     
-    public Boolean is_stopword(String w) {
+    private Boolean is_stopword(String w) {
         if (w.length()>1 && !this.stopwords.contains(w)){
         	return false;
         }
@@ -124,7 +124,7 @@ class WordFrequencyManager{
     }
     
     
-    public LinkedHashMap<String, Integer> increment_count(String word){
+    private LinkedHashMap<String, Integer> increment_count(String word){
         if (this.termFreq.containsKey(word)){
 			int curFreq = this.termFreq.get(word)  + 1;
 			this.termFreq.put(word,curFreq);
@@ -135,7 +135,7 @@ class WordFrequencyManager{
 		return null;
     }
     
-    public LinkedHashMap<String, Integer> sorted(){
+    private LinkedHashMap<String, Integer> sorted(){
 		LinkedHashMap<String, Integer> sortedTermFreq = new LinkedHashMap<>();
 		this.termFreq.entrySet().stream()
                 .sorted(Map.Entry.<String, Integer>comparingByValue().reversed())
@@ -165,7 +165,7 @@ class WordFrequencyController{
         return;
     }
     
-    public void init(String path_to_file) throws Exception{
+    private void init(String path_to_file) throws Exception{
         this.storage_manager = new DataStorageManager();
         this.stop_word_manager = new StopWordManager();
         this.word_freq_manager = new WordFrequencyManager();
@@ -173,7 +173,7 @@ class WordFrequencyController{
         this.stop_word_manager.dispatch(new String[]{"init"});
     }
     
-    public void run() throws Exception{
+    private void run() throws Exception{
         List<String> words = this.storage_manager.dispatch(new String[]{"getWords"});
         for(String w: words){
             if(!this.stop_word_manager.dispatch(new String[]{"is_stopword",w})){
