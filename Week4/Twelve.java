@@ -8,11 +8,18 @@ import java.util.Collections;
 import java.util.Comparator; 
 import java.util.HashMap; 
 import java.util.LinkedHashMap; 
+import java.util.stream.Collectors;
 import java.util.Map;
+import java.util.function.Function;
+
+//Evita Bakopoulou, UCInet: ebakopou
 
 class Twelve{
+    public static HashMap<String, Object> data_storage_obj = new HashMap<String, Object>();
+    public static HashMap<String, Object> stop_words_obj =  new HashMap<String, Object>();
+    public static HashMap<String, Object> word_freq_obj = new HashMap<String, Object>();
     
-    public void extract_words(HashMap<String, List<String>> obj, String path_to_file) throws IOException{
+    public static void extract_words(HashMap<String, Object> obj, String filePath) throws IOException{
         List<String> words = new ArrayList<String>();
 		String line;
         try{
@@ -23,7 +30,7 @@ class Twelve{
 			    String [] split = line.split(" ");
         	    for (String w:split){
         		  words.add(w);
-        	      }
+        	     }
         	}
         	obj.put("data", words);
         }
@@ -33,7 +40,7 @@ class Twelve{
     }
     
     
-    public void load_stop_words(HashMap<String, List<String>> obj){
+    public static void load_stop_words(HashMap<String, Object> obj) throws IOException{
 		String stopwords_path = "../stop_words.txt";
 		String line;
         List<String> stopword_list = new ArrayList<String>();
@@ -51,26 +58,93 @@ class Twelve{
         }
         obj.put("stop_words", stopword_list);
     }
-    
-    
-    public void increment_count(HashMap<String, List<String>> obj, String w){
-        if (obj.get("freqs").containsKey(w)){
-			int curFreq = obj.get("freqs").get(w)  + 1;
-			obj.get("freqs").put(w,curFreq);
-		}
-		else{
-			obj.get("freqs").put(w,1);
-		}
-    }
-    
-    
-    public static void main(String[] args){
-        HashMap<String, List<String>> data_storage_obj = new HashMap<>();
-        data_storage_obj.put("data", new List<String>());
-        data_storage_obj.put("init") = "";
-        data_storage_obj.put("words", data_storage_obj.get("data"));
 
+    
+    public static void increment_count(HashMap<String, Object> freq_obj) {
+		HashMap<String, Integer> freq = ((HashMap<String, Integer>) word_freq_obj.get("freqs"));
+		List<String> words = (ArrayList<String>) data_storage_obj.get("words");
+		boolean is_stopword;
+		for (String word : words) {
+		    if(word.length()>1){
+    		        is_stopword = ((Function<String, Boolean>) stop_words_obj.get("is_stop_word")).apply(word);
+        		    if(!is_stopword){
+            		      if (freq.containsKey(word)){
+            				freq.put(word, freq.get(word) + 1);}
+            			  else{
+            				freq.put(word, 1);
+            		      }
+    			     }
+		     }
+	     }
+		freq_obj.put("freqs", freq);
+	}
+    
+    public static void main(String[] args) throws IOException{
+        List<String> data = new ArrayList<>();
+        data_storage_obj.put("data", data);
+        data_storage_obj.put("init", (Runnable) (() -> {
+            try{
+                extract_words(data_storage_obj, args[0]);
+            }
+            catch(IOException e){
+                e.printStackTrace();
+            }
+        }));
+        ((Runnable) data_storage_obj.get("init")).run();
         
-    }
+        List<String> words = (List<String>)data_storage_obj.get("data");
+        data_storage_obj.put("words", words);
+        
+        HashMap<String, Object> stop_words_obj = new HashMap<>();
+        stop_words_obj.put("stop_words", new ArrayList<String>());
+        stop_words_obj.put("init", (Runnable) ( () -> {
+            try{
+                load_stop_words(stop_words_obj);
+            }
+            catch(IOException e){
+                e.printStackTrace();
+            }
+        }));
+        
+        stop_words_obj.put("is_stop_word", (Function<String, Boolean>) w -> ((List<String>)stop_words_obj.get("stop_words")).contains(w));
+        words = (List<String>)data_storage_obj.get("words");
+        ((Runnable) stop_words_obj.get("init")).run();
+        
+        HashMap<String, Integer> freqs = new HashMap<String, Integer>();
+        word_freq_obj.put("freqs", freqs);
+        word_freq_obj.put("increment_count", (Runnable) ( () -> {
+			HashMap<String, Integer> freq = ((HashMap<String, Integer>) word_freq_obj.get("freqs"));
+    		final List<String> words2 = (ArrayList<String>) data_storage_obj.get("words");
+    		boolean is_stopword;
+    		for (String word : words2) {
+                is_stopword = ((Function<String, Boolean>) stop_words_obj.get("is_stop_word")).apply(word);
+                if((is_stopword==false) && word.length()>1){
+        		      if (freq.containsKey(word)){
+                	       freq.put(word, freq.get(word) + 1);
+                	  }
+                	  else{
+                			freq.put(word, 1);
+        		      }
+			     }
+    	     }
+    	     word_freq_obj.put("freqs", freq);
+		}));
+		((Runnable) word_freq_obj.get("increment_count")).run();
+		
+		word_freq_obj.put("sorted", (Runnable) ( () -> {
+		    LinkedHashMap<String, Integer> ordered = ((HashMap<String, Integer>)word_freq_obj.get("freqs")).entrySet().stream()
+                .sorted(Map.Entry.<String, Integer>comparingByValue().reversed())
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue,
+                        (oldValue, newValue) -> oldValue, LinkedHashMap::new));
+            word_freq_obj.put("freqs", ordered);
+		}));
+		((Runnable) word_freq_obj.get("sorted")).run();
+		
+		word_freq_obj.put("top25", (Runnable) ( () -> {
+		    ((Map<String, Integer>)word_freq_obj.get("freqs")).entrySet().stream().limit(25).forEach(p -> System.out.println(p.getKey() + " - " + p.getValue()));
+		
+		}));
+		((Runnable) word_freq_obj.get("top25")).run();
+	}
 
 }
