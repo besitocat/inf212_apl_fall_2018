@@ -74,11 +74,11 @@ class Twelve{
 		    if(word.length()>1){
     		        is_stopword = ((Function<String, Boolean>) stop_words_obj.me.get("is_stop_word")).apply(word);
         		    if(!is_stopword){
-            		      if (freq.containsKey(word)){
+            		       if (freq.containsKey(word)){
             				freq.put(word, freq.get(word) + 1);}
-            			  else{
+            			   else{
             				freq.put(word, 1);
-            		      }
+            		       }
     			     }
 		     }
 	     }
