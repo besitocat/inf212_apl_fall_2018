@@ -15,13 +15,12 @@ import java.util.Map;
 
 public class Fourteen{
     
-    //private static WordFrequencyCounter wfCounter;
-    
     interface Handler{
         public void load(String arg) throws IOException;
         public void run() throws IOException;
     }
     
+    //main framework
     static class WordFrequencyFramework{
         private List<Handler> load_event_handlers = new ArrayList<Handler>();
         private List<Handler> dowork_event_handlers = new ArrayList<Handler>();
@@ -57,6 +56,7 @@ public class Fourteen{
         }
     }
     
+    //reads original file, extracts normalized words and removes stopwords
     static class DataStorage implements Handler{
         private StopWordFilter stopword_filter;
         private List<String> data = new ArrayList<String>();
@@ -105,6 +105,7 @@ public class Fourteen{
         }
     }
     
+    //reads the stopword file and provides the filter method:
     static class StopWordFilter implements Handler{
         private List<String> stopwords = new ArrayList<String>();
         
@@ -145,7 +146,7 @@ public class Fourteen{
     
     }
 
-        
+    //counts the frequency of each word and prints the top 25 most popular words and their counts:    
     static class WordFrequencyCounter implements Handler{
         private Map<String, Integer> termFreq = new HashMap<String, Integer>();
         
@@ -208,7 +209,7 @@ public class Fourteen{
     				counter +=1;
     			}
 	       }
-	       System.out.println("\nNumber of words with z: " + Integer.toString(counter));
+	       System.out.println("--Number of unique words with z: " + Integer.toString(counter));
         }
     }
     	
