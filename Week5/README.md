@@ -9,10 +9,8 @@ within /projects/besito-inf212_mycode/Week5 directory:
 
 Compile by running:
     javac Fourteen.java
-    javac Fifteen.java
     javac TwentyFour.java
  
 Run file by running:
     java Fourteen "../pride-and-prejudice.txt"
-    java Fifteen "../pride-and-prejudice.txt"
     java TwentyFour "../pride-and-prejudice.txt"
