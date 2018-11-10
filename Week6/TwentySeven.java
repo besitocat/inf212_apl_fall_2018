@@ -61,7 +61,7 @@ public class TwentySeven{
         int k = 25;
         for(String key: sortedTermFreq.keySet()){
             if(counter<k){
-				System.out.println(key + " - " + Integer.toString(sortedTermFreq.get(key)));
+                System.out.println(key + " - " + Integer.toString(sortedTermFreq.get(key)));
 				counter +=1;
     		}
 		}
