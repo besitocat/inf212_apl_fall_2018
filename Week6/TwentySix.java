@@ -16,13 +16,14 @@ import java.util.stream.Stream;
 //Evita Bakopoulou, UCInet: ebakopou
 
 
-     interface Column{
+    interface Column{
         List<String> get_formula();
         void apply_formula(List<String> formula);
         List<String> get_words();
     }
+
     
-     interface ColumnNumeric{
+    interface ColumnNumeric{ //interface for the counts column, which contains integers
         List<Integer> get_formula();
         void apply_formula(List<Integer> formula);
     }
@@ -287,7 +288,9 @@ import java.util.stream.Stream;
 
     stop_words.update_words(stopword_list);
     
-    List<String> formula_stopwords = (all_words.get_words()).stream().filter(w -> !stop_words.get_words().contains(w) && w.length()>1).collect(Collectors.toList());
+    List<String> formula_stopwords = (all_words.get_words()).stream()
+                                    .filter(w -> !stop_words.get_words().contains(w) && w.length()>1)
+                                    .collect(Collectors.toList());
     non_stop_words.set_formula(formula_stopwords);
 
     non_stop_words = (NonStopWordsColumn)update_column(non_stop_words);
@@ -299,7 +302,8 @@ import java.util.stream.Stream;
     unique_words = (UniqueWordsColumn)update_column(unique_words); 
     
     List<Integer> count_formula = new ArrayList<>();
-    Map<String, Integer> freq_counts_map = non_stop_words.get_words().parallelStream().collect(Collectors.toConcurrentMap(w -> w, w -> 1, Integer::sum));
+    Map<String, Integer> freq_counts_map = non_stop_words.get_words().parallelStream()
+                                            .collect(Collectors.toConcurrentMap(w -> w, w -> 1, Integer::sum));
     
     for(String w: unique_words.get_words()){
         count_formula.add(freq_counts_map.get(w));
@@ -329,5 +333,4 @@ import java.util.stream.Stream;
         System.out.println(w);
     }
     }
-
 }
