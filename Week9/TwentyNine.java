@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
 
+
 //Evita Bakopoulou, UCInet: ebakopou
 
 //Dataspaces Style 29.1 & 29.2
@@ -81,11 +82,10 @@ public class TwentyNine{
         	               e.printStackTrace();
         	               throw new RuntimeException("Couldn't add item to queue.");
         	           }
-        	          
-            	   }
-                }
-            }
-        }
+            	   }//if
+                }//for
+            }//while
+        }//try
         catch(IOException e){
             e.printStackTrace();
         }
