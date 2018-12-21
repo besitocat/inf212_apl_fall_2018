@@ -1,3 +1,6 @@
+# TwentySix.java: Spreadsheet Style 26.1
+# TwentySeven.java: Lazy Rivers 27.1 + 27.2
+
 -Compile by running:
 
     javac TwentySix.java
