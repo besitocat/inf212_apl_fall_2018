@@ -1,10 +1,10 @@
 
-part 1:
+# Part 1: Recursion via the Y Combinator
 
 python seven.py "../pride-and-prejudice.txt"
 
 
-part 2:
+# Part 2: Kick Forward style
 
 Compile by running:
 
